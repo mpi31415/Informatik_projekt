@@ -11,7 +11,7 @@ import json
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'Th1s1ss3cr3t'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/bolde/PycharmProjects/BackendInformatikProjekt/project.db '
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db '
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
