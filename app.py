@@ -7,7 +7,7 @@ import uuid
 import jwt
 import datetime
 from functools import wraps
-from quests import generate_math
+from quests import generate_math, generate_quest
 from flask_migrate import Migrate
 from flask_cors import CORS, cross_origin
 import json
@@ -116,8 +116,15 @@ def get_all_users():
 @app.route('/get_math', methods=['GET'])
 @token_required
 @cross_origin()
-def generate_quests(current_user):
+def generate_maths(current_user):
     return jsonify({'quest': generate_math()})
+
+
+@app.route('/get_quest', methods=['GET'])
+@token_required
+@cross_origin()
+def generate_quests(current_user):
+    return jsonify({'quest': generate_quest()})
 
 
 @app.route('/')
