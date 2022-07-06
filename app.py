@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,9 +12,12 @@ import json
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'Th1s1ss3cr3t'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db '
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config.from_mapping(
+    SECRET_KEY=os.environ.get('SECRET_KEY') or 'dev_key',
+    SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL') or \
+                            'sqlite:///' + os.path.join(app.instance_path, 'task_list.sqlite'),
+    SQLALCHEMY_TRACK_MODIFICATIONS=False
+)
 
 db = SQLAlchemy(app)
 
@@ -111,5 +116,5 @@ def index():
 
 
 if __name__ == '__main__':
-    db.create_all()
+    db.init_app()
     app.run(threaded=True, port=5000)
