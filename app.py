@@ -16,7 +16,7 @@ migrate = Migrate()
 
 app.config.from_mapping(
     SECRET_KEY=os.environ.get('SECRET_KEY') or 'dev_key',
-    SQLALCHEMY_DATABASE_URI=(os.environ.get('DATABASE_URL') or
+    SQLALCHEMY_DATABASE_URI=(
                              'sqlite:///' + os.path.join(app.instance_path, 'project.db')),
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 )
