@@ -122,7 +122,7 @@ def index():
 
 
 if __name__ == '__main__':
-    db.init_app(app)
-    #db.create_all()
+    #db.init_app(app)
+    db.create_all()
     migrate.init_app(app, db)
     app.run(threaded=True, port=5000)
