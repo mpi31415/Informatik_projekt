@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import null
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
 import jwt
@@ -65,7 +66,8 @@ def signup_user():
     data = request.get_json()
 
     hashed_password = generate_password_hash(data['password'], method='sha256')
-
+    if not Users.query.filter_by(name=data['name']).first() == null:
+        return jsonify({'message': 'Username already taken'})
     new_user = Users(public_id=str(uuid.uuid4()), name=data['name'], password=hashed_password, admin=False)
     db.session.add(new_user)
     db.session.commit()
