@@ -8,10 +8,11 @@ import jwt
 import datetime
 from functools import wraps
 from quests import generate_quest
+from flask_migrate import Migrate
 import json
 
 app = Flask(__name__)
-
+migrate = Migrate()
 
 app.config.from_mapping(
     SECRET_KEY=os.environ.get('SECRET_KEY') or 'dev_key',
@@ -24,6 +25,7 @@ app.config.from_mapping(
 )
 
 db = SQLAlchemy(app)
+migrate.init_app(app, db)
 
 
 class Users(db.Model):
