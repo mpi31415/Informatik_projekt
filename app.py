@@ -75,9 +75,14 @@ def signup_user():
 @app.route('/login', methods=['GET', 'POST'])
 @cross_origin()
 def login_user():
+    print(request.headers)
+
     auth = request.authorization
+    print(auth.username)
+    print(auth.password)
 
     if not auth or not auth.username or not auth.password:
+        print("I am here")
         return make_response('could not verify', 401, {'WWW.Authentication': 'Basic realm: "login required"'})
 
     user = Users.query.filter_by(name=auth.username).first()
