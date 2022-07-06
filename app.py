@@ -16,16 +16,12 @@ migrate = Migrate()
 
 app.config.from_mapping(
     SECRET_KEY=os.environ.get('SECRET_KEY') or 'dev_key',
-    SQLALCHEMY_DATABASE_URI=((os.environ.get('DATABASE_URL') or
-                              'sqlite:///' + os.path.join(app.instance_path, 'task_list.sqlite'))).replace(
-        "postgres://",
-        "postgresql://",
-        1),
+    SQLALCHEMY_DATABASE_URI=(os.environ.get('DATABASE_URL') or
+                             'sqlite:///' + os.path.join(app.instance_path, 'project.db')),
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 )
 
 db = SQLAlchemy(app)
-
 
 
 class Users(db.Model):
@@ -122,7 +118,8 @@ def index():
 
 
 if __name__ == '__main__':
-    #db.init_app(app)
+    print(os.path.join(app.instance_path, 'project.db'))
+    # db.init_app(app)
     db.create_all()
     migrate.init_app(app, db)
     app.run(threaded=True, port=5000)
