@@ -1,38 +1,37 @@
 import random
 
 
-def generate_quest():
-    Haustier = True
-    if Haustier:
+def ask_for_int(message: str) -> int:
+    number = None
+    while type(number) != int:
+        try:
+            number = int(input(message))
+        except ValueError:
+            print("Das ist keine Ganzzahl!")
+    return number
 
-        choose = []
-        while len(choose) < 5:
-            x = random.randint(0, 10)
-            if x not in choose:
-                choose.append(x)
-        print(choose)
 
-        quest = ["Wäsche machen", "Mit dem Hund Gassi", "Polizei rufen wegen Nachbarn", "Religion wechseln",
-                 "Mit meinem Lieblings Atom Kriegsverbrechen in Yugoslavien begehen", "Mittagsschlaf",
-                 "Affen rekrutieren für meine Armee", "Müll sammeln", "Zur Arbeit beim Indischen Call Center gehen",
-                 "Fake News im Netz verbreiten", "Wettrennen gegen Steven Hawkins machen"]
+def generate_math():
+    punkte = 0
+    combo_true = 1
+    combo_false = 1
+    for i in range(1, 11):
+        print(f"Runde {i}:")
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        operator = random.choice(["+", "-", "*", "%", "//", "**"])
 
-        for i in choose:
-            print(quest[i])
+        user_input = ask_for_int(f"Wie viel ist {a} {operator} {b} ? ")
+
+        if user_input == eval(f"{a}{operator}{b}"):
+            punkte += i * combo_true ** 2
+            combo_true += 100
+            combo_false = 1
+            print("Korrekt")
         else:
-            choose = []
-        while len(choose) < 5:
-            x = random.randint(0, 9)
-            if x not in choose:
-                choose.append(x)
-        print(choose)
+            punkte -= i * combo_false ** 2
+            combo_false += 100
+            combo_true = 1
+            print("Falsch")
 
-        quest = ["Wäsche machen", "Polizei rufen wegen Nachbarn", "Religion wechseln",
-                 "Mit meinem Lieblings Atom Kriegsverbrechen in Yugoslavien begehen", "Mittagsschlaf",
-                 "Affen rekrutieren für meine Armee", "Müll sammeln", "Zur Arbeit beim Indischen Call Center gehen",
-                 "Fake News im Netz verbreiten", "Wettrennen gegen Steven Hawkins machen"]
-
-        for i in choose:
-            return quest[i]
-
-
+        print(f"Punkte: {punkte}\n")

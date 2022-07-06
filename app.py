@@ -7,7 +7,7 @@ import uuid
 import jwt
 import datetime
 from functools import wraps
-from quests import generate_quest
+from quests import generate_math
 from flask_migrate import Migrate
 from flask_cors import CORS, cross_origin
 import json
@@ -61,6 +61,7 @@ def token_required(f):
 @app.route('/register', methods=['GET', 'POST'])
 @cross_origin()
 def signup_user():
+
     data = request.get_json()
 
     hashed_password = generate_password_hash(data['password'], method='sha256')
@@ -75,14 +76,9 @@ def signup_user():
 @app.route('/login', methods=['GET', 'POST'])
 @cross_origin()
 def login_user():
-    print(request.headers)
-
     auth = request.authorization
-    print(auth.username)
-    print(auth.password)
 
     if not auth or not auth.username or not auth.password:
-        print("I am here")
         return make_response('could not verify', 401, {'WWW.Authentication': 'Basic realm: "login required"'})
 
     user = Users.query.filter_by(name=auth.username).first()
@@ -117,11 +113,11 @@ def get_all_users():
     return jsonify({'users': result})
 
 
-@app.route('/get_quest', methods=['GET'])
+@app.route('/get_math', methods=['GET'])
 @token_required
 @cross_origin()
 def generate_quests(current_user):
-    return jsonify({'quest': generate_quest()})
+    return jsonify({'quest': generate_math()})
 
 
 @app.route('/')
