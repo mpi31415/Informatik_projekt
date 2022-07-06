@@ -105,7 +105,9 @@ def generate_quests(current_user):
     return jsonify({'quest': generate_quest()})
 
 
-
+@app.route('/')
+def index():
+    return "<h1> Running</h1>"
 
 
 if __name__ == '__main__':
