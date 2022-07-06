@@ -9,16 +9,19 @@ import datetime
 from functools import wraps
 from quests import generate_quest
 from flask_migrate import Migrate
+from flask_cors import CORS, cross_origin
 import json
 
 app = Flask(__name__)
 migrate = Migrate()
+cors = CORS(app)
 
 app.config.from_mapping(
     SECRET_KEY=os.environ.get('SECRET_KEY') or 'dev_key',
     SQLALCHEMY_DATABASE_URI=(
-                             'sqlite:///' + os.path.join(app.instance_path, 'project.db')),
-    SQLALCHEMY_TRACK_MODIFICATIONS=False
+            'sqlite:///' + os.path.join(app.instance_path, 'project.db')),
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    CORS_HEADERS='Content-type'
 )
 
 db = SQLAlchemy(app)
@@ -56,6 +59,7 @@ def token_required(f):
 
 
 @app.route('/register', methods=['GET', 'POST'])
+@cross_origin()
 def signup_user():
     data = request.get_json()
 
@@ -69,6 +73,7 @@ def signup_user():
 
 
 @app.route('/login', methods=['GET', 'POST'])
+@cross_origin()
 def login_user():
     auth = request.authorization
 
@@ -89,6 +94,7 @@ def login_user():
 
 
 @app.route('/user', methods=['GET'])
+@cross_origin()
 def get_all_users():
     users = Users.query.all()
 
@@ -108,11 +114,13 @@ def get_all_users():
 
 @app.route('/get_quest', methods=['GET'])
 @token_required
+@cross_origin()
 def generate_quests(current_user):
     return jsonify({'quest': generate_quest()})
 
 
 @app.route('/')
+@cross_origin()
 def index():
     return "<h1> Running</h1>"
 
